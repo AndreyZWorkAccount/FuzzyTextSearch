@@ -20,19 +20,54 @@ func Run(node trie.INode, word string) []Distance {
 	}
 	distance := make([]Distance,0)
 
+	context := stepContext{editDistances, make([]trie.INode,0)}
 	for _,c := range node.Children(){
-		newDistances := run(c, c.Symbol(), []rune(word), editDistances)
+		input := inputArgs{c, []rune(word)}
+		var newDistances []Distance
+
+		newDistances, context = run( input, context)
 		distance = append(distance, newDistances...)
 	}
 	return distance
 }
 
-func run(node trie.INode, letter rune, word []rune, previousDistances []int) []Distance {
+func run(input inputArgs, context stepContext) (outRes []Distance, newContext stepContext) {
 	result := make([]Distance,0)
 
+	word := input.word
+	node := input.node
+	previousDistances := context.distances
+
+	currentDistances := calcCurrentDistances(node, word, previousDistances)
+
+	if node.IsFinal(){
+		currentWordDistance := currentDistances[len(currentDistances)-1]
+		visNodes := append(context.visitedNodes, node)
+		result = append(result,Distance{currentWordDistance, GetWord(visNodes)})
+	}
+
+	children := node.Children()
+	if len(children) == 0{
+		return result, stepContext{currentDistances, context.visitedNodes}
+	}
+
+	for _,n := range children{
+		input := inputArgs{n, word}
+		context := stepContext{currentDistances,append(context.visitedNodes, node)}
+
+		newDistances,_ := run(input, context)
+		result = append(result, newDistances...)
+	}
+
+	return result, stepContext{currentDistances,context.visitedNodes}
+}
+
+func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int) []int{
 	currentDistances := make([]int, len(word)+1)
 	currentDistances[0] = previousDistances[0] + 1
 	lettersCount := len(word) + 1
+
+	letter := node.Symbol()
 
 	for pos := 1; pos < lettersCount; pos++ {
 
@@ -43,25 +78,16 @@ func run(node trie.INode, letter rune, word []rune, previousDistances []int) []D
 			repDist += 1
 		}
 		currentDistances[pos] = Min([]int{removeDist, addDist, repDist})
-
 	}
+	return currentDistances
+}
 
-	if node.IsFinal(){
-		currentWordDistance := currentDistances[len(currentDistances)-1]
-		result = append(result,Distance{currentWordDistance, string(node.Symbol())})
+func GetWord(nodes []trie.INode) string{
+	runes := make([]rune,0)
+	for _,n := range nodes{
+		runes = append(runes,n.Symbol())
 	}
-
-	children := node.Children()
-	if len(children) == 0{
-		return result
-	}
-
-	for _,n := range children{
-		newDistances := run(n, n.Symbol(), word, currentDistances)
-		result = append(result, newDistances...)
-	}
-
-	return result
+	return string(runes)
 }
 
 

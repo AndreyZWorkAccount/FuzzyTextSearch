@@ -19,7 +19,7 @@ import (
 
 func main() {
 	const dict = "ax ab abc abcd abcde abcdef abcdefg"
-	const testWord = "ab"
+	const testWord = "abce"
 
 	//read input
 	scanner := bufio.NewScanner(strings.NewReader(dict))
@@ -31,10 +31,12 @@ func main() {
 		vocabulary.Put(scanner.Text())
 	}
 
+	//print vocabulary
 	for _,w := range vocabulary.Words(){
 		fmt.Println(w)
 	}
 
+	//find distances to all words
 	fmt.Println(levenshteinAlg.Run(vocabulary, testWord))
 }
 
