@@ -8,15 +8,11 @@
 
 package priorityQueue
 
-
-
-type IPriorityQueue interface {
-	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		int
+type BinomialNode struct {
+	priority int
 }
 
-type IPrioritized interface {
-	Priority() int
+//IPrioritized implementation
+func (n *BinomialNode) Priority() int{
+	return n.priority
 }

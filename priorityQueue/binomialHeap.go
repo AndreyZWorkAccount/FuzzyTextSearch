@@ -14,17 +14,17 @@ type BinomialHeap struct {
 }
 
 //IPriorityQueue implementation
-func (b *BinomialHeap) Insert(item Prioritized){
+func (b *BinomialHeap) Insert(item IPrioritized){
 
 	panic("Not implemented")
 }
 
-func (b *BinomialHeap) Pop() Prioritized{
+func (b *BinomialHeap) Pop() IPrioritized{
 
 	panic("Not implemented")
 }
 
-func (b *BinomialHeap) Peek() Prioritized{
+func (b *BinomialHeap) Peek() IPrioritized{
 
 	panic("Not implemented")
 }

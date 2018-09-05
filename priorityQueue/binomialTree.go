@@ -9,14 +9,7 @@
 package priorityQueue
 
 
+type BinomialTree struct {
 
-type IPriorityQueue interface {
-	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		int
-}
 
-type IPrioritized interface {
-	Priority() int
 }
