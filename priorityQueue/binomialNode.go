@@ -9,10 +9,26 @@
 package priorityQueue
 
 type BinomialNode struct {
-	priority int
+
+	value interface{}
+
+	priority uint
+
+	children []BinomialNode
 }
 
+func newBinomialNode(priority uint, value interface{}) BinomialNode{
+	return BinomialNode{
+		priority:priority,
+		value:value }
+}
+
+
 //IPrioritized implementation
-func (n *BinomialNode) Priority() int{
+func (n *BinomialNode) Priority() uint{
 	return n.priority
+}
+
+func (n *BinomialNode) Value() interface{}{
+	return n.value
 }

@@ -9,16 +9,9 @@
 package priorityQueue
 
 
-
-type IPriorityQueue interface {
-	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		uint
-}
-
-type IPrioritized interface {
-	Value() interface{}
-
-	Priority() uint
+func NewBinomialHeap() *BinomialHeap {
+	return &BinomialHeap {
+		forest: make(map[Rank]BinomialTree,0),
+		size: 0,
+	}
 }

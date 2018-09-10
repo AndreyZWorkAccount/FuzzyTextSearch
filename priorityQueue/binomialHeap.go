@@ -8,35 +8,30 @@
 
 package priorityQueue
 
-
 type BinomialHeap struct {
 
+	forest map[Rank]BinomialTree
+
+	size uint
 }
 
-//IPriorityQueue implementation
-func (b *BinomialHeap) Insert(item IPrioritized){
-
-	panic("Not implemented")
+func (b *BinomialHeap) insert(newTree BinomialTree){
+	tree := b.getTreeWithRank(newTree.rank)
+	if tree == nil{
+		b.forest[newTree.rank] = newTree
+	} else {
+		delete(b.forest,tree.rank)
+		mergedTree := tree.merge(&newTree)
+		b.insert(mergedTree)
+	}
 }
 
-func (b *BinomialHeap) Pop() IPrioritized{
 
-	panic("Not implemented")
-}
-
-func (b *BinomialHeap) Peek() IPrioritized{
-
-	panic("Not implemented")
-}
-
-func (b *BinomialHeap) Size() int{
-
-	panic("Not implemented")
-}
-
-func (b *BinomialHeap) Merge( other *BinomialHeap) *BinomialHeap{
-
-	panic("Not implemented")
+func (bh *BinomialHeap) HasTreeWithRank(rank Rank) bool{
+	if _, ok := bh.forest[rank]; ok{
+		return true
+	}
+	return false
 }
 
 

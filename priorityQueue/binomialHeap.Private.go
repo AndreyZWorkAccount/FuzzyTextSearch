@@ -8,17 +8,12 @@
 
 package priorityQueue
 
-
-
-type IPriorityQueue interface {
-	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		uint
+func (bh *BinomialHeap) getTreeWithRank(rank Rank) *BinomialTree{
+	for _,n := range bh.forest{
+		if n.rank == rank{
+			return &n
+		}
+	}
+	return nil
 }
 
-type IPrioritized interface {
-	Value() interface{}
-
-	Priority() uint
-}

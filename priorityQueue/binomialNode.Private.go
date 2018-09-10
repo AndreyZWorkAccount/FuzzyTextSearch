@@ -9,16 +9,10 @@
 package priorityQueue
 
 
-
-type IPriorityQueue interface {
-	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		uint
-}
-
-type IPrioritized interface {
-	Value() interface{}
-
-	Priority() uint
+func (bn *BinomialNode) mergeWith(other *BinomialNode) *BinomialNode{
+	if bn.priority >= other.priority{
+		bn, other = other, bn
+	}
+	bn.children = append(bn.children, *other)
+	return bn
 }

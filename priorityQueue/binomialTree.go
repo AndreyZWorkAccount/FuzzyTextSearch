@@ -8,8 +8,23 @@
 
 package priorityQueue
 
+type Rank int
 
 type BinomialTree struct {
 
+	rank Rank
 
+	root BinomialNode
+}
+
+func NewBinomialTree(val IPrioritized) BinomialTree{
+	return BinomialTree{
+		rank:0,
+		root:newBinomialNode(val.Priority(), val.Value()),
+	}
+}
+
+func (bt *BinomialTree) merge(other *BinomialTree) BinomialTree{
+	mergedRoot := bt.root.mergeWith(&other.root)
+	return 	BinomialTree{ root: *mergedRoot, rank: bt.rank  + 1}
 }
