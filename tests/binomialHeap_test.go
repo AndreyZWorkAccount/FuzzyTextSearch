@@ -10,6 +10,7 @@ package tests
 
 import (
 	"math/rand"
+	"reflect"
 	"testing"
 
 	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
@@ -115,6 +116,39 @@ func TestPopDecreaseSize(t *testing.T){
 	heap.Pop()
 
 	sizeShouldBe(heap,0, t)
+}
+
+func TestMergeTwoHeaps(t *testing.T){
+	firstHeap := priorityQueue.NewBinomialHeap()
+	secondHeap := priorityQueue.NewBinomialHeap()
+
+	expectedArray := []uint{7,3,1,2,8,4,5,6,10,9}
+
+	middleIndex := len(expectedArray)/2
+
+	for _,x := range expectedArray[:middleIndex]{
+		firstHeap.Insert( &ValueWithPriority{value:x, priority:x})
+	}
+
+	for _,x := range expectedArray[middleIndex:]{
+		secondHeap.Insert( &ValueWithPriority{value:x, priority:x})
+	}
+
+	firstHeap.Merge(secondHeap)
+
+	if firstHeap.Size() != uint(len(expectedArray)){
+		t.Error("Merged heap should contain all elements from the expected array.")
+	}
+
+	actualArray := make([]uint,0)
+	for firstHeap.Size()>0{
+		actualArray = append(actualArray, firstHeap.Pop().Value().(uint))
+	}
+
+	if !reflect.DeepEqual(actualArray , []uint{1,2,3,4,5,6,7,8,9,10}){
+		t.Error("Arrays should be equal.")
+	}
+
 }
 
 

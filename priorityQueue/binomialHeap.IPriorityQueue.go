@@ -45,7 +45,9 @@ func (b *BinomialHeap) Size() uint{
 	return b.size
 }
 
-func (b *BinomialHeap) Merge( other *BinomialHeap) *BinomialHeap{
-
-	panic("Not implemented")
+func (b *BinomialHeap) Merge( other *BinomialHeap){
+	for _,node := range other.forest{
+		b.insert(node)
+	}
+	b.size += other.size
 }
