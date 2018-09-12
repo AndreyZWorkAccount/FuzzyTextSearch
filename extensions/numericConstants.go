@@ -6,12 +6,10 @@
 //
 //http://www.apache.org/licenses/LICENSE-2.0
 
-package priorityQueue
+package extensions
 
+const(
 
-func NewBinomialHeap() *BinomialHeap {
-	return &BinomialHeap {
-		forest: make(map[Rank]*BinomialNode,0),
-		size: 0,
-	}
-}
+	MaxUInt = ^uint(0)
+
+)

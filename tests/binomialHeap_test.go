@@ -9,7 +9,9 @@
 package tests
 
 import (
+	"math/rand"
 	"testing"
+
 	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
 )
 
@@ -73,6 +75,46 @@ func TestInsertIntoBinHeap(t *testing.T) {
 	shouldNotHaveTreeWithRank(heap, 0, t)
 	shouldNotHaveTreeWithRank(heap, 1, t)
 	shouldHaveTreeWithRank(heap, 2, t)
+}
+
+func TestPopFromBinHeap(t *testing.T){
+	heap := priorityQueue.NewBinomialHeap()
+
+	var newVal priorityQueue.IPrioritized
+
+	r := rand.New(rand.NewSource(99))
+
+	for i :=uint(100000);i>1;i--{
+		//Insert
+		newVal = &ValueWithPriority{value:uint(r.Intn(100000)), priority:uint(r.Intn(100000))}
+		heap.Insert(newVal)
+	}
+
+	current := heap.Peek()
+
+	for heap.Size() > 0{
+		tmp := heap.Pop()
+
+		if tmp.Priority() < current.Priority(){
+			t.Error("Elemenst order is broken.")
+		}
+		current = tmp
+	}
+}
+
+func TestPopDecreaseSize(t *testing.T){
+	heap := priorityQueue.NewBinomialHeap()
+
+	//Insert
+	newVal := &ValueWithPriority{value:100, priority:100}
+	heap.Insert(newVal)
+
+	sizeShouldBe(heap,1, t)
+
+	//Pop
+	heap.Pop()
+
+	sizeShouldBe(heap,0, t)
 }
 
 

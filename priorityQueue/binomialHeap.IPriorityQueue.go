@@ -10,19 +10,35 @@ package priorityQueue
 
 //IPriorityQueue implementation
 func (b *BinomialHeap) Insert(item IPrioritized){
-	newTree := NewBinomialTree(item)
-	b.insert(newTree)
+	newTree := newBinomialNode(item.Priority(), item.Value())
+	b.insert(&newTree)
 	b.size++
 }
 
 func (b *BinomialHeap) Pop() IPrioritized{
+	if len(b.forest) == 0{
+		return nil
+	}
+	//find the minimum
+	minTree := b.getMinimumTree()
+	//remove minimum from heap
+	delete(b.forest, minTree.rank)
+	//add all child
+	for _,c := range minTree.children{
+		b.insert(c)
+	}
 
-	panic("Not implemented")
+	b.size--
+
+	return minTree
 }
 
 func (b *BinomialHeap) Peek() IPrioritized{
-
-	panic("Not implemented")
+	if len(b.forest) == 0{
+		return nil
+	}
+	//find the minimum
+	return b.getMinimumTree()
 }
 
 func (b *BinomialHeap) Size() uint{

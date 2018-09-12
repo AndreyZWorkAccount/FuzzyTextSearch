@@ -8,19 +8,25 @@
 
 package priorityQueue
 
+type Rank uint
+
 type BinomialNode struct {
 
 	value interface{}
 
 	priority uint
 
-	children []BinomialNode
+	rank Rank
+
+	children []*BinomialNode
 }
 
 func newBinomialNode(priority uint, value interface{}) BinomialNode{
 	return BinomialNode{
 		priority:priority,
-		value:value }
+		value:value,
+		rank:Rank(0),
+}
 }
 
 

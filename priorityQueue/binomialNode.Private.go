@@ -13,6 +13,7 @@ func (bn *BinomialNode) mergeWith(other *BinomialNode) *BinomialNode{
 	if bn.priority >= other.priority{
 		bn, other = other, bn
 	}
-	bn.children = append(bn.children, *other)
+	bn.children = append(bn.children, other)
+	bn.rank += 1
 	return bn
 }

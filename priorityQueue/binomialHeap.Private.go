@@ -8,12 +8,32 @@
 
 package priorityQueue
 
-func (bh *BinomialHeap) getTreeWithRank(rank Rank) *BinomialTree{
+import "github.com/AndreyZWorkAccount/Levenshtein/extensions"
+
+func (bh *BinomialHeap) getTreeWithRank(rank Rank) *BinomialNode{
 	for _,n := range bh.forest{
 		if n.rank == rank{
-			return &n
+			return n
 		}
 	}
 	return nil
 }
+
+func (bh *BinomialHeap) getMinimumTree() *BinomialNode{
+	if len(bh.forest) == 0{
+		return nil
+	}
+
+	minPriority := extensions.MaxUInt
+	var ansRank Rank
+	for rank, tree := range bh.forest{
+		if tree.priority < minPriority{
+			minPriority = tree.priority
+			ansRank = rank
+		}
+	}
+	res := bh.forest[ansRank]
+	return res
+}
+
 
