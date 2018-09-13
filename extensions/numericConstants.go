@@ -8,8 +8,6 @@
 
 package extensions
 
-const(
-
+const (
 	MaxUInt = ^uint(0)
-
 )

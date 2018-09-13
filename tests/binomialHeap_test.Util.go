@@ -13,21 +13,20 @@ import (
 	"testing"
 )
 
-func shouldHaveTreeWithRank(bh *BinomialHeap, rank Rank, t *testing.T){
-	if !bh.HasTreeWithRank(rank){
+func shouldHaveTreeWithRank(bh *BinomialHeap, rank Rank, t *testing.T) {
+	if !bh.HasTreeWithRank(rank) {
 		t.Errorf("There should be a binomial tree with rank %v.", rank)
 	}
 }
 
-func shouldNotHaveTreeWithRank(bh *BinomialHeap, rank Rank, t *testing.T){
-	if bh.HasTreeWithRank(rank){
+func shouldNotHaveTreeWithRank(bh *BinomialHeap, rank Rank, t *testing.T) {
+	if bh.HasTreeWithRank(rank) {
 		t.Errorf("There shouldn't be a binomial tree with rank %v.", rank)
 	}
 }
 
-func sizeShouldBe(bh *BinomialHeap, size uint, t *testing.T){
-	if bh.Size() != size{
+func sizeShouldBe(bh *BinomialHeap, size uint, t *testing.T) {
+	if bh.Size() != size {
 		t.Errorf("Size should be equal to %v.", size)
 	}
 }
-

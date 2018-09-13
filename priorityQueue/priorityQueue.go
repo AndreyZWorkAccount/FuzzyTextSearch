@@ -8,13 +8,11 @@
 
 package priorityQueue
 
-
-
 type IPriorityQueue interface {
 	Insert(IPrioritized)
-	Pop()    	IPrioritized
-	Peek()    	IPrioritized
-	Size()		uint
+	Pop() IPrioritized
+	Peek() IPrioritized
+	Size() uint
 }
 
 type IPrioritized interface {

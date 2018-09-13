@@ -8,10 +8,9 @@
 
 package priorityQueue
 
-
 func NewBinomialHeap() *BinomialHeap {
-	return &BinomialHeap {
-		forest: make(map[Rank]*BinomialNode,0),
-		size: 0,
+	return &BinomialHeap{
+		forest: make(map[Rank]*BinomialNode, 0),
+		size:   0,
 	}
 }

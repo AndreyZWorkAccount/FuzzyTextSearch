@@ -15,6 +15,6 @@ type inputArgs struct {
 }
 
 type stepContext struct {
-	distances []int
+	distances    []int
 	visitedNodes []trie.INode
 }

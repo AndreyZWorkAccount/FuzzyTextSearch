@@ -10,11 +10,11 @@ package main
 
 import (
 	"bufio"
-	"strings"
 	"fmt"
+	"strings"
 
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
 	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
+	"github.com/AndreyZWorkAccount/Levenshtein/trie"
 )
 
 func main() {
@@ -27,17 +27,15 @@ func main() {
 
 	//fill vocabulary
 	vocabulary := trie.New()
-	for scanner.Scan(){
+	for scanner.Scan() {
 		vocabulary.Put(scanner.Text())
 	}
 
 	//print vocabulary
-	for _,w := range vocabulary.Words(){
+	for _, w := range vocabulary.Words() {
 		fmt.Println(w)
 	}
 
 	//find distances to all words
 	fmt.Println(levenshteinAlg.Run(vocabulary, testWord))
 }
-
-

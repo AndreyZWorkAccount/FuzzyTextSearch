@@ -8,10 +8,9 @@
 
 package trie
 
-
 // Node is an implementation of prefix tree.
 type Node struct {
-	letter     rune
-	isFinal    bool
+	letter   rune
+	isFinal  bool
 	children map[rune]*Node
 }

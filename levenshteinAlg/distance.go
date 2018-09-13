@@ -1,7 +1,6 @@
 package levenshteinAlg
 
-
 type Distance struct {
-	Value int
+	Value  int
 	ToWord string
 }

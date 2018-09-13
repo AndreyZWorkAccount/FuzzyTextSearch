@@ -8,7 +8,6 @@
 
 package trie
 
-
 func New() *Node {
 	return newNode()
 }
@@ -16,5 +15,3 @@ func New() *Node {
 func newNode() *Node {
 	return &Node{children: make(map[rune]*Node)}
 }
-
-

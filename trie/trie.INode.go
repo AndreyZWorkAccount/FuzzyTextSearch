@@ -9,7 +9,6 @@
 package trie
 
 type INode interface {
-
 	IsFinal() bool
 	Children() []INode
 
@@ -20,4 +19,3 @@ type INode interface {
 
 	Wrap() INode
 }
-

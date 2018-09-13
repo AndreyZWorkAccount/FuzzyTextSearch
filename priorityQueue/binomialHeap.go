@@ -9,31 +9,25 @@
 package priorityQueue
 
 type BinomialHeap struct {
-
 	forest map[Rank]*BinomialNode
 
 	size uint
 }
 
-func (b *BinomialHeap) insert(newTree *BinomialNode){
+func (b *BinomialHeap) insert(newTree *BinomialNode) {
 	tree := b.getTreeWithRank(newTree.rank)
-	if tree == nil{
+	if tree == nil {
 		b.forest[newTree.rank] = newTree
 	} else {
-		delete(b.forest,tree.rank)
+		delete(b.forest, tree.rank)
 		mergedTree := tree.mergeWith(newTree)
 		b.insert(mergedTree)
 	}
 }
 
-
-func (bh *BinomialHeap) HasTreeWithRank(rank Rank) bool{
-	if _, ok := bh.forest[rank]; ok{
+func (bh *BinomialHeap) HasTreeWithRank(rank Rank) bool {
+	if _, ok := bh.forest[rank]; ok {
 		return true
 	}
 	return false
 }
-
-
-
-

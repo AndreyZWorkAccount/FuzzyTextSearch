@@ -8,31 +8,30 @@
 package levenshteinAlg
 
 import (
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
 	. "github.com/AndreyZWorkAccount/Levenshtein/extensions"
+	"github.com/AndreyZWorkAccount/Levenshtein/trie"
 )
-
 
 func Run(node trie.INode, word string) []Distance {
 	editDistances := make([]int, len(word)+1)
 	for k := range editDistances {
 		editDistances[k] = k
 	}
-	distance := make([]Distance,0)
+	distance := make([]Distance, 0)
 
-	context := stepContext{editDistances, make([]trie.INode,0)}
-	for _,c := range node.Children(){
+	context := stepContext{editDistances, make([]trie.INode, 0)}
+	for _, c := range node.Children() {
 		input := inputArgs{c, []rune(word)}
 		var newDistances []Distance
 
-		newDistances, context = run( input, context)
+		newDistances, context = run(input, context)
 		distance = append(distance, newDistances...)
 	}
 	return distance
 }
 
 func run(input inputArgs, context stepContext) (outRes []Distance, newContext stepContext) {
-	result := make([]Distance,0)
+	result := make([]Distance, 0)
 
 	word := input.word
 	node := input.node
@@ -40,29 +39,29 @@ func run(input inputArgs, context stepContext) (outRes []Distance, newContext st
 
 	currentDistances := calcCurrentDistances(node, word, previousDistances)
 
-	if node.IsFinal(){
+	if node.IsFinal() {
 		currentWordDistance := currentDistances[len(currentDistances)-1]
 		visNodes := append(context.visitedNodes, node)
-		result = append(result,Distance{currentWordDistance, GetWord(visNodes)})
+		result = append(result, Distance{currentWordDistance, GetWord(visNodes)})
 	}
 
 	children := node.Children()
-	if len(children) == 0{
+	if len(children) == 0 {
 		return result, stepContext{currentDistances, context.visitedNodes}
 	}
 
-	for _,n := range children{
+	for _, n := range children {
 		input := inputArgs{n, word}
-		context := stepContext{currentDistances,append(context.visitedNodes, node)}
+		context := stepContext{currentDistances, append(context.visitedNodes, node)}
 
-		newDistances,_ := run(input, context)
+		newDistances, _ := run(input, context)
 		result = append(result, newDistances...)
 	}
 
-	return result, stepContext{currentDistances,context.visitedNodes}
+	return result, stepContext{currentDistances, context.visitedNodes}
 }
 
-func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int) []int{
+func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int) []int {
 	currentDistances := make([]int, len(word)+1)
 	currentDistances[0] = previousDistances[0] + 1
 	lettersCount := len(word) + 1
@@ -82,12 +81,10 @@ func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int)
 	return currentDistances
 }
 
-func GetWord(nodes []trie.INode) string{
-	runes := make([]rune,0)
-	for _,n := range nodes{
-		runes = append(runes,n.Symbol())
+func GetWord(nodes []trie.INode) string {
+	runes := make([]rune, 0)
+	for _, n := range nodes {
+		runes = append(runes, n.Symbol())
 	}
 	return string(runes)
 }
-
-

@@ -9,14 +9,14 @@
 package priorityQueue
 
 //IPriorityQueue implementation
-func (b *BinomialHeap) Insert(item IPrioritized){
+func (b *BinomialHeap) Insert(item IPrioritized) {
 	newTree := newBinomialNode(item.Priority(), item.Value())
 	b.insert(&newTree)
 	b.size++
 }
 
-func (b *BinomialHeap) Pop() IPrioritized{
-	if len(b.forest) == 0{
+func (b *BinomialHeap) Pop() IPrioritized {
+	if len(b.forest) == 0 {
 		return nil
 	}
 	//find the minimum
@@ -24,7 +24,7 @@ func (b *BinomialHeap) Pop() IPrioritized{
 	//remove minimum from heap
 	delete(b.forest, minTree.rank)
 	//add all child
-	for _,c := range minTree.children{
+	for _, c := range minTree.children {
 		b.insert(c)
 	}
 
@@ -33,20 +33,20 @@ func (b *BinomialHeap) Pop() IPrioritized{
 	return minTree
 }
 
-func (b *BinomialHeap) Peek() IPrioritized{
-	if len(b.forest) == 0{
+func (b *BinomialHeap) Peek() IPrioritized {
+	if len(b.forest) == 0 {
 		return nil
 	}
 	//find the minimum
 	return b.getMinimumTree()
 }
 
-func (b *BinomialHeap) Size() uint{
+func (b *BinomialHeap) Size() uint {
 	return b.size
 }
 
-func (b *BinomialHeap) Merge( other *BinomialHeap){
-	for _,node := range other.forest{
+func (b *BinomialHeap) Merge(other *BinomialHeap) {
+	for _, node := range other.forest {
 		b.insert(node)
 	}
 	b.size += other.size

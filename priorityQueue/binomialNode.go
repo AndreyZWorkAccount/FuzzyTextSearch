@@ -11,7 +11,6 @@ package priorityQueue
 type Rank uint
 
 type BinomialNode struct {
-
 	value interface{}
 
 	priority uint
@@ -21,20 +20,19 @@ type BinomialNode struct {
 	children []*BinomialNode
 }
 
-func newBinomialNode(priority uint, value interface{}) BinomialNode{
+func newBinomialNode(priority uint, value interface{}) BinomialNode {
 	return BinomialNode{
-		priority:priority,
-		value:value,
-		rank:Rank(0),
+		priority: priority,
+		value:    value,
+		rank:     Rank(0),
+	}
 }
-}
-
 
 //IPrioritized implementation
-func (n *BinomialNode) Priority() uint{
+func (n *BinomialNode) Priority() uint {
 	return n.priority
 }
 
-func (n *BinomialNode) Value() interface{}{
+func (n *BinomialNode) Value() interface{} {
 	return n.value
 }

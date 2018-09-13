@@ -8,9 +8,8 @@
 
 package priorityQueue
 
-
-func (bn *BinomialNode) mergeWith(other *BinomialNode) *BinomialNode{
-	if bn.priority >= other.priority{
+func (bn *BinomialNode) mergeWith(other *BinomialNode) *BinomialNode {
+	if bn.priority >= other.priority {
 		bn, other = other, bn
 	}
 	bn.children = append(bn.children, other)

@@ -8,7 +8,6 @@
 
 package extensions
 
-
 func Min(x []int) int {
 	if len(x) == 0 {
 		return 0
