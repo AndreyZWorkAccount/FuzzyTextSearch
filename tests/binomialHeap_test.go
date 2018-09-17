@@ -16,18 +16,6 @@ import (
 	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
 )
 
-type ValueWithPriority struct {
-	value, priority uint
-}
-
-func (v *ValueWithPriority) Value() interface{} {
-	return v.value
-}
-
-func (v *ValueWithPriority) Priority() uint {
-	return v.priority
-}
-
 func TestInsertIntoBinHeap(t *testing.T) {
 
 	heap := priorityQueue.NewBinomialHeap()
@@ -41,31 +29,31 @@ func TestInsertIntoBinHeap(t *testing.T) {
 	}
 
 	//Insert single value
-	newVal := ValueWithPriority{value: 1, priority: 1}
-	heap.Insert(&newVal)
+	newVal := priorityQueue.NewPrioritized(1, 1)
+	heap.Insert(newVal)
 	//assert
 	sizeShouldBe(heap, 1, t)
 	shouldHaveTreeWithRank(heap, 0, t)
 
 	//Insert new value
-	newVal = ValueWithPriority{value: 1, priority: 2}
-	heap.Insert(&newVal)
+	newVal = priorityQueue.NewPrioritized(1, 2)
+	heap.Insert(newVal)
 	//assert
 	sizeShouldBe(heap, 2, t)
 	shouldNotHaveTreeWithRank(heap, 0, t)
 	shouldHaveTreeWithRank(heap, 1, t)
 
 	//Insert new value
-	newVal = ValueWithPriority{value: 1, priority: 0}
-	heap.Insert(&newVal)
+	newVal = priorityQueue.NewPrioritized(1, 0)
+	heap.Insert(newVal)
 	//assert
 	sizeShouldBe(heap, 3, t)
 	shouldHaveTreeWithRank(heap, 0, t)
 	shouldHaveTreeWithRank(heap, 1, t)
 
 	//Insert new value
-	newVal = ValueWithPriority{value: 1, priority: 0}
-	heap.Insert(&newVal)
+	newVal = priorityQueue.NewPrioritized(1, 0)
+	heap.Insert(newVal)
 	//assert
 	sizeShouldBe(heap, 4, t)
 	shouldNotHaveTreeWithRank(heap, 0, t)
@@ -82,14 +70,14 @@ func TestPopFromBinHeap(t *testing.T) {
 
 	for i := uint(100000); i > 1; i-- {
 		//Insert
-		newVal = &ValueWithPriority{value: uint(r.Intn(100000)), priority: uint(r.Intn(100000))}
+		newVal = priorityQueue.NewPrioritized(uint(r.Intn(100000)), uint(r.Intn(100000)))
 		heap.Insert(newVal)
 	}
 
 	current := heap.Peek()
 
 	for heap.Size() > 0 {
-		tmp := heap.Pop()
+		_, tmp := heap.Pop()
 
 		if tmp.Priority() < current.Priority() {
 			t.Error("Elemenst order is broken.")
@@ -102,7 +90,7 @@ func TestPopDecreaseSize(t *testing.T) {
 	heap := priorityQueue.NewBinomialHeap()
 
 	//Insert
-	newVal := &ValueWithPriority{value: 100, priority: 100}
+	newVal := priorityQueue.NewPrioritized(100, 100)
 	heap.Insert(newVal)
 
 	sizeShouldBe(heap, 1, t)
@@ -122,11 +110,11 @@ func TestMergeTwoHeaps(t *testing.T) {
 	middleIndex := len(expectedArray) / 2
 
 	for _, x := range expectedArray[:middleIndex] {
-		firstHeap.Insert(&ValueWithPriority{value: x, priority: x})
+		firstHeap.Insert(priorityQueue.NewPrioritized(x, x))
 	}
 
 	for _, x := range expectedArray[middleIndex:] {
-		secondHeap.Insert(&ValueWithPriority{value: x, priority: x})
+		secondHeap.Insert(priorityQueue.NewPrioritized(x, x))
 	}
 
 	firstHeap.Merge(secondHeap)
@@ -137,7 +125,8 @@ func TestMergeTwoHeaps(t *testing.T) {
 
 	actualArray := make([]uint, 0)
 	for firstHeap.Size() > 0 {
-		actualArray = append(actualArray, firstHeap.Pop().Value().(uint))
+		_, item := firstHeap.Pop()
+		actualArray = append(actualArray, item.Value().(uint))
 	}
 
 	if !reflect.DeepEqual(actualArray, []uint{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) {

@@ -15,9 +15,9 @@ func (b *BinomialHeap) Insert(item IPrioritized) {
 	b.size++
 }
 
-func (b *BinomialHeap) Pop() IPrioritized {
+func (b *BinomialHeap) Pop() (ok bool, item IPrioritized) {
 	if len(b.forest) == 0 {
-		return nil
+		return false, nil
 	}
 	//find the minimum
 	minTree := b.getMinimumTree()
@@ -30,7 +30,7 @@ func (b *BinomialHeap) Pop() IPrioritized {
 
 	b.size--
 
-	return minTree
+	return true, minTree
 }
 
 func (b *BinomialHeap) Peek() IPrioritized {

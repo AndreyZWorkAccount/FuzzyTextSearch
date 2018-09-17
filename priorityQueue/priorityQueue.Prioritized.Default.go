@@ -6,17 +6,19 @@
 //
 //http://www.apache.org/licenses/LICENSE-2.0
 
-package extensions
+package priorityQueue
 
-func Min(x []uint) uint {
-	if len(x) == 0 {
-		return 0
-	}
-	ans := x[0]
-	for _, v := range x[1:] {
-		if v < ans {
-			ans = v
-		}
-	}
-	return ans
+type PrioritizedDefault struct {
+	value interface{}
+
+	priority uint
+}
+
+//IPrioritized implementation
+func (n *PrioritizedDefault) Priority() uint {
+	return n.priority
+}
+
+func (n *PrioritizedDefault) Value() interface{} {
+	return n.value
 }

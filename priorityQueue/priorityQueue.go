@@ -10,13 +10,7 @@ package priorityQueue
 
 type IPriorityQueue interface {
 	Insert(IPrioritized)
-	Pop() IPrioritized
+	Pop() (bool, IPrioritized)
 	Peek() IPrioritized
 	Size() uint
-}
-
-type IPrioritized interface {
-	Value() interface{}
-
-	Priority() uint
 }

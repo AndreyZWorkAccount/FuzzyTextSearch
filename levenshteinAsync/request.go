@@ -6,17 +6,12 @@
 //
 //http://www.apache.org/licenses/LICENSE-2.0
 
-package extensions
+package levenshteinAsync
 
-func Min(x []uint) uint {
-	if len(x) == 0 {
-		return 0
-	}
-	ans := x[0]
-	for _, v := range x[1:] {
-		if v < ans {
-			ans = v
-		}
-	}
-	return ans
+type SearchRequest struct {
+	word string
+}
+
+func NewRequest(w string) SearchRequest {
+	return SearchRequest{word: w}
 }

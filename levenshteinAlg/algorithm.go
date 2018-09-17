@@ -13,9 +13,9 @@ import (
 )
 
 func Run(node trie.INode, word string) []Distance {
-	editDistances := make([]int, len(word)+1)
+	editDistances := make([]uint, len(word)+1)
 	for k := range editDistances {
-		editDistances[k] = k
+		editDistances[k] = uint(k)
 	}
 	distance := make([]Distance, 0)
 
@@ -61,8 +61,8 @@ func run(input inputArgs, context stepContext) (outRes []Distance, newContext st
 	return result, stepContext{currentDistances, context.visitedNodes}
 }
 
-func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int) []int {
-	currentDistances := make([]int, len(word)+1)
+func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint) []uint {
+	currentDistances := make([]uint, len(word)+1)
 	currentDistances[0] = previousDistances[0] + 1
 	lettersCount := len(word) + 1
 
@@ -76,7 +76,7 @@ func calcCurrentDistances(node trie.INode, word []rune, previousDistances []int)
 		if word[pos-1] != letter {
 			repDist += 1
 		}
-		currentDistances[pos] = Min([]int{removeDist, addDist, repDist})
+		currentDistances[pos] = Min([]uint{removeDist, addDist, repDist})
 	}
 	return currentDistances
 }

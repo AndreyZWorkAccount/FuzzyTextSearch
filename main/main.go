@@ -11,6 +11,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/AndreyZWorkAccount/Levenshtein/vocabularyReader"
 	"strings"
 
 	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
@@ -25,6 +26,10 @@ func main() {
 	scanner := bufio.NewScanner(strings.NewReader(dict))
 	scanner.Split(bufio.ScanWords)
 
+	/*chunks := createInputChunks(scanner, 3)
+	readers := createVocReaders(chunks)
+	vocabularies := createVocabularies(readers)*/
+
 	//fill vocabulary
 	vocabulary := trie.New()
 	for scanner.Scan() {
@@ -38,4 +43,44 @@ func main() {
 
 	//find distances to all words
 	fmt.Println(levenshteinAlg.Run(vocabulary, testWord))
+}
+
+func createInputChunks(scanner *bufio.Scanner, chunkSize int) [][]string {
+	result := make([][]string, 0)
+
+	for scanner.Scan() {
+		chunk := make([]string, 0)
+
+		canRead := true
+		for canRead && len(chunk) < chunkSize {
+			chunk = append(chunk, scanner.Text())
+			canRead = scanner.Scan()
+		}
+
+		result = append(result, chunk)
+	}
+
+	return result
+}
+
+func createVocReaders(chunks [][]string) []vocabularyReader.IVocabularyReader {
+	readers := make([]vocabularyReader.IVocabularyReader, 0)
+	for _, chunk := range chunks {
+		reader := vocabularyReader.NewVocReaderStringBased(chunk)
+		readers = append(readers, &reader)
+	}
+	return readers
+}
+
+func createVocabularies(readers []vocabularyReader.IVocabularyReader) []*trie.INode {
+	tries := make([]*trie.INode, 0)
+
+	for _, reader := range readers {
+		trie := trie.New()
+		for item := reader.ReadElement(); item.HasValue; {
+			trie.Put(item.Value)
+		}
+	}
+
+	return tries
 }
