@@ -9,7 +9,6 @@
 package levenshteinAsync
 
 import (
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
 	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
 )
 
@@ -17,25 +16,15 @@ type ResponseBinomial struct {
 	heap *priorityQueue.BinomialHeap
 }
 
-func NewResponseBinomial(distances []levenshteinAlg.Distance) *ResponseBinomial {
-	heap := priorityQueue.NewBinomialHeap()
-
-	for _, dist := range distances {
-		item := priorityQueue.NewPrioritized(dist.ToWord, dist.Value)
-		heap.Insert(item)
-	}
-
-	return &ResponseBinomial{heap}
-}
-
 //Response implementation
-func (r *ResponseBinomial) GetItems() []ResponseItem {
+func (r *ResponseBinomial) GetItems(count uint) []ResponseItem {
 	result := make([]ResponseItem, 0)
 
 	ok, item := r.heap.Pop()
-	for ;ok;ok, item = r.heap.Pop()  {
+	for ; ok && count > 0; ok, item = r.heap.Pop() {
 		newItem := ResponseItem{item.Value().(string), item.Priority()}
 		result = append(result, newItem)
+		count--
 	}
 
 	return result

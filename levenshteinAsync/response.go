@@ -14,7 +14,7 @@ type ResponseItem struct {
 }
 
 type Response interface {
-	GetItems() []ResponseItem
+	GetItems(count uint) []ResponseItem
 
 	Merge(other Response)
 }

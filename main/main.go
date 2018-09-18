@@ -9,78 +9,65 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"github.com/AndreyZWorkAccount/Levenshtein/vocabularyReader"
-	"strings"
-
 	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
+	async "github.com/AndreyZWorkAccount/Levenshtein/levenshteinAsync"
+	"time"
 )
 
 func main() {
-	const dict = "ax ab abc abcd abcde abcdef abcdefg"
-	const testWord = "abce"
+	//setup
+	const testWord = "silly"
+	const dictionaryFileName = "main\\words"
+	const dictionarySize = 256
+	const topCount = 20
+	requestProcessingTime := time.Second * 2
+	costs := levenshteinAlg.ChangesCosts{1,1,1}
+
+	fmt.Printf("Word to search: %v.\n\n", testWord)
 
 	//read input
-	scanner := bufio.NewScanner(strings.NewReader(dict))
-	scanner.Split(bufio.ScanWords)
-
-	/*chunks := createInputChunks(scanner, 3)
-	readers := createVocReaders(chunks)
-	vocabularies := createVocabularies(readers)*/
-
-	//fill vocabulary
-	vocabulary := trie.New()
-	for scanner.Scan() {
-		vocabulary.Put(scanner.Text())
+	ok, dictionaries := readDictionaries(dictionaryFileName, dictionarySize)
+	if !ok{
+		return
 	}
 
-	//print vocabulary
-	for _, w := range vocabulary.Words() {
-		fmt.Println(w)
+	//run processor
+	processor := async.NewProcessor(dictionaries, requestProcessingTime, costs)
+	processor.Start()
+
+	//send request
+	processor.Requests() <- async.NewRequest(testWord)
+	result := waitForResponse(requestProcessingTime, processor.Responses())
+
+	if result == nil{
+		return
 	}
 
-	//find distances to all words
-	fmt.Println(levenshteinAlg.Run(vocabulary, testWord))
+	fmt.Println("Most matching:")
+	for _, res := range result.GetItems(topCount) {
+		fmt.Printf("%v  ( distance:  %v ).\n", res.Word, res.Distance)
+	}
 }
 
-func createInputChunks(scanner *bufio.Scanner, chunkSize int) [][]string {
-	result := make([][]string, 0)
+func waitForResponse(requestProcessingTime time.Duration, responses <-chan async.Response) async.Response {
+	defer timeTrack(time.Now(),"waitForResponse")
 
-	for scanner.Scan() {
-		chunk := make([]string, 0)
-
-		canRead := true
-		for canRead && len(chunk) < chunkSize {
-			chunk = append(chunk, scanner.Text())
-			canRead = scanner.Scan()
-		}
-
-		result = append(result, chunk)
-	}
-
-	return result
-}
-
-func createVocReaders(chunks [][]string) []vocabularyReader.IVocabularyReader {
-	readers := make([]vocabularyReader.IVocabularyReader, 0)
-	for _, chunk := range chunks {
-		reader := vocabularyReader.NewVocReaderStringBased(chunk)
-		readers = append(readers, &reader)
-	}
-	return readers
-}
-
-func createVocabularies(readers []vocabularyReader.IVocabularyReader) []*trie.INode {
-	tries := make([]*trie.INode, 0)
-
-	for _, reader := range readers {
-		trie := trie.New()
-		for item := reader.ReadElement(); item.HasValue; {
-			trie.Put(item.Value)
+	requestBreak := time.After(requestProcessingTime)
+	for {
+		select {
+		case response := <-responses:
+		    return response
+		case <-requestBreak:
+			fmt.Println("Processing timeout.")
+			return nil
+		default:
 		}
 	}
-
-	return tries
 }
+
+func timeTrack(start time.Time, operation string) {
+	elapsed := time.Since(start)
+	fmt.Printf("%s took %s\n\n", operation, elapsed)
+}
+

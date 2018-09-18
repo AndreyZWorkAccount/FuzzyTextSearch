@@ -12,7 +12,8 @@ import (
 	"github.com/AndreyZWorkAccount/Levenshtein/trie"
 )
 
-func Run(node trie.INode, word string) []Distance {
+
+func Run(node trie.INode, word string, costs ChangesCosts) []Distance {
 	editDistances := make([]uint, len(word)+1)
 	for k := range editDistances {
 		editDistances[k] = uint(k)
@@ -24,20 +25,20 @@ func Run(node trie.INode, word string) []Distance {
 		input := inputArgs{c, []rune(word)}
 		var newDistances []Distance
 
-		newDistances, context = run(input, context)
+		newDistances, context = run(input, context, &costs)
 		distance = append(distance, newDistances...)
 	}
 	return distance
 }
 
-func run(input inputArgs, context stepContext) (outRes []Distance, newContext stepContext) {
+func run(input inputArgs, context stepContext, costs *ChangesCosts) (outRes []Distance, newContext stepContext) {
 	result := make([]Distance, 0)
 
 	word := input.word
 	node := input.node
 	previousDistances := context.distances
 
-	currentDistances := calcCurrentDistances(node, word, previousDistances)
+	currentDistances := calcCurrentDistances(node, word, previousDistances, costs)
 
 	if node.IsFinal() {
 		currentWordDistance := currentDistances[len(currentDistances)-1]
@@ -54,14 +55,14 @@ func run(input inputArgs, context stepContext) (outRes []Distance, newContext st
 		input := inputArgs{n, word}
 		context := stepContext{currentDistances, append(context.visitedNodes, node)}
 
-		newDistances, _ := run(input, context)
+		newDistances, _ := run(input, context, costs)
 		result = append(result, newDistances...)
 	}
 
 	return result, stepContext{currentDistances, context.visitedNodes}
 }
 
-func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint) []uint {
+func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint, costs *ChangesCosts) []uint {
 	currentDistances := make([]uint, len(word)+1)
 	currentDistances[0] = previousDistances[0] + 1
 	lettersCount := len(word) + 1
@@ -70,11 +71,11 @@ func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint
 
 	for pos := 1; pos < lettersCount; pos++ {
 
-		addDist := previousDistances[pos] + 1
-		removeDist := currentDistances[pos-1] + 1
+		addDist := previousDistances[pos] + costs.AddCost
+		removeDist := currentDistances[pos-1] + costs.RemoveCost
 		repDist := previousDistances[pos-1]
 		if word[pos-1] != letter {
-			repDist += 1
+			repDist += costs.ReplaceCost
 		}
 		currentDistances[pos] = Min([]uint{removeDist, addDist, repDist})
 	}
