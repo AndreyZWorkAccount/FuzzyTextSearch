@@ -1,2 +1,2 @@
-# Levenshtein
-packages for calculating levenshtein distance ( see main.go )
+# Fuzzy search
+packages for fuzzy text search ( see main.go )
