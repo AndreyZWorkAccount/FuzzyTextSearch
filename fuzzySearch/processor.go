@@ -6,7 +6,7 @@
 //
 //http://www.apache.org/licenses/LICENSE-2.0
 
-package levenshteinAsync
+package fuzzySearch
 
 type IProcessor interface {
 	Requests() chan SearchRequest

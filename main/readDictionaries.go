@@ -10,19 +10,19 @@ package main
 
 import (
 	"bufio"
-	"path/filepath"
-	"io/ioutil"
-	"fmt"
 	"bytes"
+	"fmt"
+	"io/ioutil"
+	"path/filepath"
 
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/vocabularyReader"
 )
 
-func readDictionaries(dictionaryFileName string, dictionarySize int) (ok bool, dictionaries []trie.INode){
-	currentDir,_ := filepath.Abs("./")
+func readDictionaries(dictionaryFileName string, dictionarySize int) (ok bool, dictionaries []trie.INode) {
+	currentDir, _ := filepath.Abs("./")
 
-	b, err := ioutil.ReadFile(  currentDir + "\\" + dictionaryFileName) // just pass the file name
+	b, err := ioutil.ReadFile(currentDir + "\\" + dictionaryFileName) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 		ok = false

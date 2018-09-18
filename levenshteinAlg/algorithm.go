@@ -12,7 +12,6 @@ import (
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 )
 
-
 func Run(node trie.INode, word string, costs ChangesCosts) []Distance {
 	editDistances := make([]uint, len(word)+1)
 	for k := range editDistances {

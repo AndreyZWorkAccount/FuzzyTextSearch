@@ -9,8 +9,8 @@
 package tests
 
 import (
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/fuzzySearch"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
-	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAsync"
 	"sort"
 	"testing"
 )
@@ -32,8 +32,8 @@ func TestResponseBinomialMerge(t *testing.T) {
 		return etalonDistances[i].Value < etalonDistances[j].Value
 	})
 
-	responceOne := levenshteinAsync.NewResponseBinomial(respOneDistances[:])
-	responceTwo := levenshteinAsync.NewResponseBinomial(respTwoDistances[:])
+	responceOne := fuzzySearch.NewResponseBinomial(respOneDistances[:])
+	responceTwo := fuzzySearch.NewResponseBinomial(respTwoDistances[:])
 
 	responceOne.Merge(responceTwo)
 

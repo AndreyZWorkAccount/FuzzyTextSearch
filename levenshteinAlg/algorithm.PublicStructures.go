@@ -8,13 +8,12 @@
 
 package levenshteinAlg
 
-
 type ChangesCosts struct {
-	AddCost uint
-	RemoveCost uint
+	AddCost     uint
+	RemoveCost  uint
 	ReplaceCost uint
 }
 
-func DefaultChangesCosts() ChangesCosts{
-	return ChangesCosts{ 1,1,1}
+func DefaultChangesCosts() ChangesCosts {
+	return ChangesCosts{1, 1, 1}
 }

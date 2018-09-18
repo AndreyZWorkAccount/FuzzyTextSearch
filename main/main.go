@@ -10,8 +10,8 @@ package main
 
 import (
 	"fmt"
+	search "github.com/AndreyZWorkAccount/FuzzyTextSearch/fuzzySearch"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
-	async "github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAsync"
 	"time"
 )
 
@@ -22,25 +22,25 @@ func main() {
 	const dictionarySize = 256
 	const topCount = 20
 	requestProcessingTime := time.Second * 2
-	costs := levenshteinAlg.ChangesCosts{1,1,1}
+	costs := levenshteinAlg.ChangesCosts{1, 1, 1}
 
 	fmt.Printf("Word to search: %v.\n\n", testWord)
 
 	//read input
 	ok, dictionaries := readDictionaries(dictionaryFileName, dictionarySize)
-	if !ok{
+	if !ok {
 		return
 	}
 
 	//run processor
-	processor := async.NewProcessor(dictionaries, requestProcessingTime, costs)
+	processor := search.NewProcessor(dictionaries, requestProcessingTime, costs)
 	processor.Start()
 
 	//send request
-	processor.Requests() <- async.NewRequest(testWord)
+	processor.Requests() <- search.NewRequest(testWord)
 	result := waitForResponse(requestProcessingTime, processor.Responses())
 
-	if result == nil{
+	if result == nil {
 		return
 	}
 
@@ -50,14 +50,14 @@ func main() {
 	}
 }
 
-func waitForResponse(requestProcessingTime time.Duration, responses <-chan async.Response) async.Response {
-	defer timeTrack(time.Now(),"waitForResponse")
+func waitForResponse(requestProcessingTime time.Duration, responses <-chan search.Response) search.Response {
+	defer timeTrack(time.Now(), "waitForResponse")
 
 	requestBreak := time.After(requestProcessingTime)
 	for {
 		select {
 		case response := <-responses:
-		    return response
+			return response
 		case <-requestBreak:
 			fmt.Println("Processing timeout.")
 			return nil
@@ -70,4 +70,3 @@ func timeTrack(start time.Time, operation string) {
 	elapsed := time.Since(start)
 	fmt.Printf("%s took %s\n\n", operation, elapsed)
 }
-

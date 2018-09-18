@@ -6,7 +6,7 @@
 //
 //http://www.apache.org/licenses/LICENSE-2.0
 
-package levenshteinAsync
+package fuzzySearch
 
 import (
 	"time"
@@ -16,7 +16,7 @@ import (
 )
 
 type RequestsProcessor struct {
-	costs levenshteinAlg.ChangesCosts
+	costs          levenshteinAlg.ChangesCosts
 	requestTimeout time.Duration
 	dictionaries   []trie.INode
 	requests       chan SearchRequest
