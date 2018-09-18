@@ -32,12 +32,12 @@ func TestResponseBinomialMerge(t *testing.T) {
 		return etalonDistances[i].Value < etalonDistances[j].Value
 	})
 
-	responceOne := fuzzySearch.NewResponseBinomial(respOneDistances[:])
-	responceTwo := fuzzySearch.NewResponseBinomial(respTwoDistances[:])
+	responceOne := fuzzySearch.NewResponse(respOneDistances[:])
+	responceTwo := fuzzySearch.NewResponse(respTwoDistances[:])
 
 	responceOne.Merge(responceTwo)
 
-	actualDistances := responceOne.GetItems()
+	actualDistances := responceOne.GetItems(5)
 
 	if len(actualDistances) != len(etalonDistances) {
 		t.Error("Incorrect length of merged result.")

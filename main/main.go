@@ -20,9 +20,9 @@ func main() {
 	//setup
 	const testWord = "revalroez"
 	const dictionaryFileName = "main\\words"
-	const dictionarySize = 256
+	const dictionarySize = 500000
 	const topCount = 20
-	requestProcessingTime := time.Second * 2
+	requestProcessingTime := time.Second * 50
 	costs := levenshteinAlg.ChangesCosts{AddCost: 1, RemoveCost: 1, ReplaceCost: 1}
 
 	fmt.Printf("Word to search: %v.\n\n", testWord)
