@@ -18,21 +18,19 @@ import (
 func (p *RequestsProcessor) processRequest(request SearchRequest) Response {
 	response := NewResponse(make([]levenshteinAlg.Distance, 0))
 
-	cancelChan, responseChan := p.waitForAllDictionaries(request)
+	allDone, responseChan := p.waitForAllDictionaries(request)
 
 	timeout := time.After(p.requestTimeout)
 	for {
 		select {
 		case newResponse := <-responseChan:
 			response.Merge(newResponse)
-		case <-cancelChan:
+		case <-allDone:
 			return response
 		case <-timeout:
 			return response
 		}
 	}
-
-	return response
 }
 
 func (p *RequestsProcessor) waitForAllDictionaries(request SearchRequest) (allDone <-chan struct{}, responses <-chan Response) {

@@ -10,6 +10,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/extensions"
 	search "github.com/AndreyZWorkAccount/FuzzyTextSearch/fuzzySearch"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
 	"time"
@@ -17,12 +18,12 @@ import (
 
 func main() {
 	//setup
-	const testWord = "silly"
+	const testWord = "revalroez"
 	const dictionaryFileName = "main\\words"
 	const dictionarySize = 256
 	const topCount = 20
 	requestProcessingTime := time.Second * 2
-	costs := levenshteinAlg.ChangesCosts{1, 1, 1}
+	costs := levenshteinAlg.ChangesCosts{AddCost: 1, RemoveCost: 1, ReplaceCost: 1}
 
 	fmt.Printf("Word to search: %v.\n\n", testWord)
 
@@ -51,7 +52,7 @@ func main() {
 }
 
 func waitForResponse(requestProcessingTime time.Duration, responses <-chan search.Response) search.Response {
-	defer timeTrack(time.Now(), "waitForResponse")
+	defer extensions.TrackTime(time.Now(), "waitForResponse")
 
 	requestBreak := time.After(requestProcessingTime)
 	for {
@@ -64,9 +65,4 @@ func waitForResponse(requestProcessingTime time.Duration, responses <-chan searc
 		default:
 		}
 	}
-}
-
-func timeTrack(start time.Time, operation string) {
-	elapsed := time.Since(start)
-	fmt.Printf("%s took %s\n\n", operation, elapsed)
 }
