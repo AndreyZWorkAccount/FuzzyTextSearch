@@ -10,8 +10,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
-	async "github.com/AndreyZWorkAccount/Levenshtein/levenshteinAsync"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
+	async "github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAsync"
 	"time"
 )
 

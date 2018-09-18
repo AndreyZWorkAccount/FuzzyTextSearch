@@ -9,8 +9,8 @@
 package levenshteinAsync
 
 import (
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
-	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/priorityQueue"
 )
 
 func NewResponse(distances []levenshteinAlg.Distance) *ResponseBinomial {

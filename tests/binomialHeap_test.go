@@ -13,7 +13,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/priorityQueue"
 )
 
 func TestInsertIntoBinHeap(t *testing.T) {

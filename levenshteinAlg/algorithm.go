@@ -8,8 +8,8 @@
 package levenshteinAlg
 
 import (
-	. "github.com/AndreyZWorkAccount/Levenshtein/extensions"
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
+	. "github.com/AndreyZWorkAccount/FuzzyTextSearch/extensions"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 )
 
 

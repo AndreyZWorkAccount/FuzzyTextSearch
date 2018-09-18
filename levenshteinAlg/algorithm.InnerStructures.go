@@ -7,7 +7,7 @@
 //http://www.apache.org/licenses/LICENSE-2.0
 package levenshteinAlg
 
-import "github.com/AndreyZWorkAccount/Levenshtein/trie"
+import "github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 
 type inputArgs struct {
 	node trie.INode

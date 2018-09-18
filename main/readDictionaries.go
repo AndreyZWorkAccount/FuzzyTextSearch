@@ -15,8 +15,8 @@ import (
 	"fmt"
 	"bytes"
 
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
-	"github.com/AndreyZWorkAccount/Levenshtein/vocabularyReader"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/vocabularyReader"
 )
 
 func readDictionaries(dictionaryFileName string, dictionarySize int) (ok bool, dictionaries []trie.INode){

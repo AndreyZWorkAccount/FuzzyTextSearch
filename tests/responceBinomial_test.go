@@ -9,8 +9,8 @@
 package tests
 
 import (
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAsync"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAsync"
 	"sort"
 	"testing"
 )

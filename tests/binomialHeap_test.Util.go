@@ -9,7 +9,7 @@
 package tests
 
 import (
-	. "github.com/AndreyZWorkAccount/Levenshtein/priorityQueue"
+	. "github.com/AndreyZWorkAccount/FuzzyTextSearch/priorityQueue"
 	"testing"
 )
 

@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
 )
 
 func (p *RequestsProcessor) processRequest(request SearchRequest) Response {

@@ -8,7 +8,7 @@
 
 package priorityQueue
 
-import "github.com/AndreyZWorkAccount/Levenshtein/extensions"
+import "github.com/AndreyZWorkAccount/FuzzyTextSearch/extensions"
 
 func (bh *BinomialHeap) getTreeWithRank(rank Rank) *BinomialNode {
 	for _, n := range bh.forest {

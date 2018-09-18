@@ -9,8 +9,8 @@
 package levenshteinAsync
 
 import (
-	"github.com/AndreyZWorkAccount/Levenshtein/levenshteinAlg"
-	"github.com/AndreyZWorkAccount/Levenshtein/trie"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 	"time"
 )
 
