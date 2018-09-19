@@ -12,6 +12,7 @@ type INode interface {
 	IsFinal() bool
 	Children() []INode
 
+	Letter() string
 	Symbol() rune
 	Words() []string
 

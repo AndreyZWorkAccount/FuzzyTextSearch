@@ -39,6 +39,10 @@ func (t *Node) Words() []string {
 	return res
 }
 
+func (t *Node) Letter() string {
+	return string(t.letter)
+}
+
 func (t *Node) Put(word string) {
 	node := t
 	for _, char := range []rune(word) {

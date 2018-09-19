@@ -35,5 +35,6 @@ func (r *ResponseBinomial) Merge(other Response) {
 	if !ok {
 		panic("Merge is impossible.")
 	}
+
 	r.heap.Merge(otherBinomial.heap)
 }

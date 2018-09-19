@@ -19,18 +19,22 @@ func Run(node trie.INode, word string, costs ChangesCosts) []Distance {
 	}
 	distance := make([]Distance, 0)
 
-	context := stepContext{editDistances, make([]trie.INode, 0)}
 	for _, c := range node.Children() {
 		input := inputArgs{c, []rune(word)}
+
 		var newDistances []Distance
 
-		newDistances, context = run(input, context, &costs)
+		initialDistances := append([]uint(nil), editDistances...)
+		context := stepContext{initialDistances, make([]trie.INode, 0)}
+
+		newDistances = run(input, context, &costs)
+
 		distance = append(distance, newDistances...)
 	}
 	return distance
 }
 
-func run(input inputArgs, context stepContext, costs *ChangesCosts) (outRes []Distance, newContext stepContext) {
+func run(input inputArgs, context stepContext, costs *ChangesCosts) (outRes []Distance) {
 	result := make([]Distance, 0)
 
 	word := input.word
@@ -47,18 +51,18 @@ func run(input inputArgs, context stepContext, costs *ChangesCosts) (outRes []Di
 
 	children := node.Children()
 	if len(children) == 0 {
-		return result, stepContext{currentDistances, context.visitedNodes}
+		return result
 	}
 
 	for _, n := range children {
 		input := inputArgs{n, word}
 		context := stepContext{currentDistances, append(context.visitedNodes, node)}
 
-		newDistances, _ := run(input, context, costs)
+		newDistances := run(input, context, costs)
 		result = append(result, newDistances...)
 	}
 
-	return result, stepContext{currentDistances, context.visitedNodes}
+	return result
 }
 
 func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint, costs *ChangesCosts) []uint {
