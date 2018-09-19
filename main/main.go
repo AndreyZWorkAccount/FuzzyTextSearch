@@ -18,8 +18,8 @@ import (
 
 func main() {
 	//setup
-	const testWord = "revalroez"
-	const dictionaryFileName = "main\\words"
+	const testWord = "miztake"
+	const dictionaryFileName = "main\\bigdict.txt"
 	const dictionarySize = 256
 	const topCount = 20
 	requestProcessingTime := time.Second * 50
