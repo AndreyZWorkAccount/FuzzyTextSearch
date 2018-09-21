@@ -80,7 +80,7 @@ func calcCurrentDistances(node trie.INode, word []rune, previousDistances []uint
 		if word[pos-1] != letter {
 			repDist += costs.ReplaceCost
 		}
-		currentDistances[pos] = Min([]uint{removeDist, addDist, repDist})
+		currentDistances[pos] = Min(removeDist, addDist, repDist)
 	}
 	return currentDistances
 }

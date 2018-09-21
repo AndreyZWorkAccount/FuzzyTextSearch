@@ -8,7 +8,7 @@
 
 package extensions
 
-func Min(x []uint) uint {
+func Min(x ...uint) uint {
 	if len(x) == 0 {
 		return 0
 	}
