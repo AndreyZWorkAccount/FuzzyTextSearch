@@ -9,7 +9,7 @@
 package fuzzySearch
 
 import (
-	"sync"
+	"github.com/AndreyZWorkAccount/FuzzyTextSearch/trie"
 	"time"
 
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
@@ -18,43 +18,36 @@ import (
 func (p *RequestsProcessor) processRequest(request SearchRequest) Response {
 	response := NewResponse(make([]levenshteinAlg.Distance, 0))
 
-	allDone, responseChan := p.waitForAllDictionaries(request)
+	responseChan := waitForAllDictionaries(request, p.dictionaries, p.costs)
 
 	timeout := time.After(p.requestTimeout)
+	expectedRespCnt := len(p.dictionaries)
+	receivedRespCnt := 0
 	for {
 		select {
 		case newResponse := <-responseChan:
+			receivedRespCnt++
 			response.Merge(newResponse)
-		case <-allDone:
-			return response
+		    if receivedRespCnt == expectedRespCnt{
+		    	return response
+			}
 		case <-timeout:
 			return response
 		}
 	}
 }
 
-func (p *RequestsProcessor) waitForAllDictionaries(request SearchRequest) (allDone <-chan struct{}, responses <-chan Response) {
-	waitChan := make(chan struct{})
+func waitForAllDictionaries(request SearchRequest, dictionaries []trie.INode, costs levenshteinAlg.ChangesCosts) (responses <-chan Response) {
 	responseChanel := make(chan Response)
 
-	wg := sync.WaitGroup{}
-	wg.Add(len(p.dictionaries))
-
-	for _, dict := range p.dictionaries {
+	for _, dict := range dictionaries {
 		searchDictionary := dict
 		go func() {
-			defer wg.Done()
-			searchResult := levenshteinAlg.Run(searchDictionary, request.word, p.costs)
+			searchResult := levenshteinAlg.Run(searchDictionary, request.word, costs)
 			responseChanel <- NewResponse(searchResult)
 		}()
 	}
 
-	go func() {
-		wg.Wait()
-		close(waitChan)
-	}()
-
-	allDone = waitChan
 	responses = responseChanel
 	return
 }
