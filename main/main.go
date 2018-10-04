@@ -9,23 +9,22 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/extensions"
 	search "github.com/AndreyZWorkAccount/FuzzyTextSearch/fuzzySearch"
 	"github.com/AndreyZWorkAccount/FuzzyTextSearch/levenshteinAlg"
+	"os"
 	"time"
 )
 
 func main() {
 	//setup
-	const testWord = "miztake"
 	const dictionaryFileName = "main\\bigdict.txt"
 	const dictionarySize = 256
 	const topCount = 20
 	requestProcessingTime := time.Second * 50
 	costs := levenshteinAlg.ChangesCosts{AddCost: 1, RemoveCost: 1, ReplaceCost: 1}
-
-	fmt.Printf("Word to search: %v.\n\n", testWord)
 
 	//read input
 	ok, dictionaries := readDictionaries(dictionaryFileName, dictionarySize)
@@ -38,17 +37,37 @@ func main() {
 	processor.Start()
 
 	//send request
-	processor.Requests() <- search.NewRequest(testWord)
-	result := waitForResponse(requestProcessingTime, processor.Responses())
 
-	if result == nil {
-		return
+
+	word,ok := readNewWord();
+	for word != "Q" && ok{
+		fmt.Printf("Word to search: %v.\n\n", word)
+
+		processor.Requests() <- search.NewRequest(word)
+		result := waitForResponse(requestProcessingTime, processor.Responses())
+
+		if result == nil {
+			return
+		}
+
+		fmt.Println("Most matching:")
+		for _, res := range result.GetItems(topCount) {
+			fmt.Printf("%v  ( distance:  %v ).\n", res.Word, res.Distance)
+		}
+		fmt.Println()
+
+		word,ok = readNewWord();
 	}
 
-	fmt.Println("Most matching:")
-	for _, res := range result.GetItems(topCount) {
-		fmt.Printf("%v  ( distance:  %v ).\n", res.Word, res.Distance)
+}
+
+var scanner = bufio.NewScanner(os.Stdin)
+func readNewWord() (word string, ok bool){
+	fmt.Println("Please, enter a word to search ( Q - for exit ): ")
+	if !scanner.Scan(){
+		return "", false
 	}
+	return scanner.Text(), true
 }
 
 func waitForResponse(requestProcessingTime time.Duration, responses <-chan search.Response) search.Response {
