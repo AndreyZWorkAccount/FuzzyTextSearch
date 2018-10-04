@@ -41,11 +41,10 @@ func waitForAllDictionaries(request SearchRequest, dictionaries []trie.INode, co
 	responseChanel := make(chan Response)
 
 	for _, dict := range dictionaries {
-		searchDictionary := dict
-		go func() {
+		go func(searchDictionary trie.INode) {
 			searchResult := levenshteinAlg.Run(searchDictionary, request.word, costs)
 			responseChanel <- NewResponse(searchResult)
-		}()
+		}(dict)
 	}
 
 	responses = responseChanel
